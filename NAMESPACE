@@ -1,0 +1,5 @@
+useDynLib(FSInteract)
+export(RIT)
+importFrom(Rcpp, evalCpp)
+importFrom(Matrix, Matrix)
+importFrom(Matrix, t)
