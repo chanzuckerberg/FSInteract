@@ -74,7 +74,9 @@ out2$Class1[1:5, ]
 out2$Class0[1:5, ]
 
 ## Can also perform the above using sparse matrices
-S <- Matrix(z, sparse=TRUE)
-S0 <- Matrix(z0, sparse=TRUE)
-out3 <- RIT(S, S0)
+if (require(Matrix)) {
+  S <- Matrix(z, sparse=TRUE)
+  S0 <- Matrix(z0, sparse=TRUE)
+  out3 <- RIT(S, S0)
+}
 }
