@@ -104,14 +104,19 @@ SEXP RIT_2class(SEXP z, SEXP z0, int L, int branch, int depth, int n_trees, doub
   set<vector<int> > total_candidate_interactions0=RIT_minhash(x0, L, branch, depth, n_trees, 
     theta0, theta1, min_inter_sz, n_cores, n, Ht, n_plus1_over_n, recip_n_plus_1);
 
-  vector<double> prevalences=PrevEst_inter(total_candidate_interactions, Ht, L,n_plus1_over_n, recip_n_plus_1);
-  vector<double> prevalences0=PrevEst_inter(total_candidate_interactions0, H0t, L,n0_plus1_over_n0, recip_n0_plus_1);
+  vector<double> prevalences11=PrevEst_inter(total_candidate_interactions, Ht, L,n_plus1_over_n, recip_n_plus_1);
+  vector<double> prevalences10=PrevEst_inter(total_candidate_interactions, H0t, L,n_plus1_over_n, recip_n_plus_1);
+  vector<double> prevalences00=PrevEst_inter(total_candidate_interactions0, H0t, L,n0_plus1_over_n0, recip_n0_plus_1);
+  vector<double> prevalences01=PrevEst_inter(total_candidate_interactions0, Ht, L,n0_plus1_over_n0, recip_n0_plus_1);
   
   //create lists 'output','output0' containing both total_candidate_interactions and prevalences for each class
   List output; List output0;
   output["Interactions"]=AddOne(total_candidate_interactions);
   output0["Interactions"]=AddOne(total_candidate_interactions0);
-  output["Prevalence"]=prevalences; output0["Prevalence"]=prevalences0;
+  output["Prevalence1"]=prevalences11;
+  output["Prevalence0"]=prevalences10;
+  output0["Prevalence0"]=prevalences00;
+  output0["Prevalence1"]=prevalences01;
   List combined_output;
   combined_output["Class1"]=output;
   combined_output["Class0"]=output0;

@@ -73,11 +73,13 @@ RIT <- function(z, z0, branch=5, depth=10L, n_trees=100L, theta0=0.5, theta1=the
     output <- RIT_2class(z, z0, L, branch, depth, n_trees, theta0, theta1, min_inter_sz, n_cores, is_sparse)
     
     # reorder output in decreasing prevalence
-    prev_order <- order(output$Class1$Prevalence, decreasing=TRUE)
-    prev_order0 <- order(output$Class0$Prevalence, decreasing=TRUE)
-    output$Class1$Prevalence <- output$Class1$Prevalence[prev_order]
+    prev_order <- order(output$Class1$Prevalence1, decreasing=TRUE)
+    prev_order0 <- order(output$Class0$Prevalence0, decreasing=TRUE)
+    output$Class1$Prevalence1 <- output$Class1$Prevalence1[prev_order]
+    output$Class1$Prevalence0 <- output$Class1$Prevalence0[prev_order]
     output$Class1$Interactions <- output$Class1$Interactions[prev_order]
-    output$Class0$Prevalence <- output$Class0$Prevalence[prev_order0]
+    output$Class0$Prevalence0 <- output$Class0$Prevalence0[prev_order0]
+    output$Class0$Prevalence1 <- output$Class0$Prevalence1[prev_order0]
     output$Class0$Interactions <- output$Class0$Interactions[prev_order0]
     
     # check whether output should be a list or a data.frame
@@ -111,7 +113,10 @@ convert.to.data.frame <- function(Inter_Prev_List) {
   for (i in seq_along(Inter_Prev_List$Interactions)) {
     str_inter[i] <- paste(Inter_Prev_List$Interactions[[i]],collapse=" ")
   }
-  data <- data.frame(str_inter, Inter_Prev_List$Prevalence, stringsAsFactors = FALSE)
-  colnames(data) <- c("Interaction", "Prevalence")
+  names <- setdiff(names(Inter_Prev_List), "Interactions")
+  data <- data.frame(Interaction=str_inter, stringsAsFactors = FALSE)
+  for (name in names) {
+      data[[name]] <- Inter_Prev_List[[name]]
+  }
   return(data)
 }
