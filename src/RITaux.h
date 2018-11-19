@@ -109,4 +109,20 @@ Rcpp::List AddOne(const set<vector<int> > &interactions) {
   return interactions_plus1;
 }
 
+// Opposite to AddOne
+
+set<vector<int> > SubtractOne (Rcpp::List interactions) {
+  set<vector<int> > result;
+
+  int n=interactions.size();
+  for(int i=0; i<n; i++) {
+    Rcpp::IntegerVector current=interactions[i];
+    for(int j=0; j<current.size(); j++) {
+      current[j]--;
+    }
+    result.insert(as<vector<int> >(current));
+  }
+  return(result);
+}
+
 #endif

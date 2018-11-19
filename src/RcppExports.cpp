@@ -44,10 +44,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// PrevEstimate_internal
+SEXP PrevEstimate_internal(SEXP interactions, SEXP z, int L, bool is_sparse);
+RcppExport SEXP _FSInteractX_PrevEstimate_internal(SEXP interactionsSEXP, SEXP zSEXP, SEXP LSEXP, SEXP is_sparseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type interactions(interactionsSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type z(zSEXP);
+    Rcpp::traits::input_parameter< int >::type L(LSEXP);
+    Rcpp::traits::input_parameter< bool >::type is_sparse(is_sparseSEXP);
+    rcpp_result_gen = Rcpp::wrap(PrevEstimate_internal(interactions, z, L, is_sparse));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_FSInteractX_RIT_1class", (DL_FUNC) &_FSInteractX_RIT_1class, 8},
     {"_FSInteractX_RIT_2class", (DL_FUNC) &_FSInteractX_RIT_2class, 11},
+    {"_FSInteractX_PrevEstimate_internal", (DL_FUNC) &_FSInteractX_PrevEstimate_internal, 4},
     {NULL, NULL, 0}
 };
 

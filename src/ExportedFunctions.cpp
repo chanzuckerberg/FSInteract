@@ -130,3 +130,48 @@ SEXP RIT_2class(SEXP z, SEXP z0, int L, int branch, int depth, int n_trees, doub
   //return combined_output
   return combined_output;
 }
+
+// [[Rcpp::export]]
+SEXP PrevEstimate_internal(SEXP interactions,
+			   SEXP z, int L, bool is_sparse) {
+  
+    //construct RaggedArray
+    RaggedArray x;
+    if (is_sparse) {
+      List iplist(z);
+      IntegerVector i_sparse(iplist[0]);
+      IntegerVector p_sparse(iplist[1]);
+      x = InputSparseMatrix(i_sparse, p_sparse);
+    }
+    else {
+      x = InputLogicalMatrix(z);
+    }
+
+    //n and p are the number of rows and cols of z respectively
+    int n=x.nrow();
+    int p=x.ncol();
+
+    int** Ht;
+    Ht = new int* [p];
+    for (int k=0; k<p; k++) {
+      Ht[k] = new int [L];
+    }
+
+    CreateHt(x, L, Ht);
+    
+    const double n_plus1_over_n=(n+1)/n; 
+    const double recip_n_plus_1=1/(n+1);
+
+    set<vector<int> > interactions1=SubtractOne(interactions);
+
+    vector<double> prevalences=PrevEst_inter(interactions1, Ht, L,
+					     n_plus1_over_n,
+					     recip_n_plus_1);
+    
+
+    List output;
+    output["Interactions"]=interactions;
+    output["Prevalence"]=prevalences;
+    return(output);
+
+}

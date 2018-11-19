@@ -9,3 +9,7 @@ RIT_2class <- function(z, z0, L, branch, depth, n_trees, theta0, theta1, min_int
     .Call(`_FSInteractX_RIT_2class`, z, z0, L, branch, depth, n_trees, theta0, theta1, min_inter_sz, n_cores, is_sparse)
 }
 
+PrevEstimate_internal <- function(interactions, z, L, is_sparse) {
+    .Call(`_FSInteractX_PrevEstimate_internal`, interactions, z, L, is_sparse)
+}
+

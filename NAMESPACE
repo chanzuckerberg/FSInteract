@@ -1,5 +1,6 @@
 useDynLib(FSInteractX, .registration=TRUE)
 export(RIT)
+export(PrevEstimate)
 importFrom(Rcpp, evalCpp)
 importFrom(Matrix, Matrix)
 importFrom(Matrix, t)
