@@ -1,4 +1,4 @@
-useDynLib(FSInteract, .registration=TRUE)
+useDynLib(FSInteractX, .registration=TRUE)
 export(RIT)
 importFrom(Rcpp, evalCpp)
 importFrom(Matrix, Matrix)
