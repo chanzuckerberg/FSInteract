@@ -18,7 +18,7 @@ Description: Performs fast detection of interactions in large-scale
     collections of columns which for many rows contain all 1's.
     .
     Additions by BV:  more information exposed to the user, better
-    parallelization (of OPENMP is available)
+    parallelization (of OPENMP is available).
 License: GPL-2
 Imports: Rcpp, Matrix, methods
 LinkingTo: Rcpp
