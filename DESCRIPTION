@@ -2,24 +2,27 @@ Package: FSInteractX
 Type: Package
 Title: Fast Searches for Interactions eXtended
 Version: 0.2.1
-Date: 2018-11-19
-Author: Hyun Jik Kim, Rajen D. Sha
+Date: 2018-11-20
+Author: Hyun Jik Kim, Rajen D. Sha, Boris Veytsman
 Maintainer: Boris Veytsman <bveytsman@chanzuckerberg.com>
-Description: Performs fast detection of interactions in large-scale data using the
-    method of random intersection trees introduced in
-    Shah, R. D. and Meinshausen, N. (2014) <http://www.jmlr.org/papers/v15/shah14a.html>. 
-    The algorithm finds potentially high-order interactions in high-dimensional binary
-    two-class classification data, without requiring lower order interactions
-    to be informative.  The search is particularly fast when the matrices of
-    predictors are sparse.  It can also be used to perform market basket analysis
-    when supplied with a single binary data matrix.  Here it will find collections
-    of columns which for many rows contain all 1's.
+Description: Performs fast detection of interactions in large-scale
+    data using the method of random intersection trees introduced in
+    Shah, R. D. and Meinshausen, N. (2014)
+    <http://www.jmlr.org/papers/v15/shah14a.html>. 
+    The algorithm finds potentially high-order interactions in
+    high-dimensional binary two-class classification data, without
+    requiring lower order interactions to be informative.  The search
+    is particularly fast when the matrices of predictors are sparse.
+    It can also be used to perform market basket analysis
+    when supplied with a single binary data matrix.  Here it will find
+    collections of columns which for many rows contain all 1's.
     .
-    Additions by BV:  more information exposed to the user.
+    Additions by BV:  more information exposed to the user, better
+    parallelization (of OPENMP is available)
 License: GPL-2
 Imports: Rcpp, Matrix, methods
 LinkingTo: Rcpp
 URL: http://www.jmlr.org/papers/v15/shah14a.html
 SystemRequirements: C++11
 NeedsCompilation: yes
-Packaged: 2018-11-19, bveytsman
+Packaged: 2018-11-20, bveytsman

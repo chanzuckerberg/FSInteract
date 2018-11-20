@@ -145,7 +145,7 @@ set<vector<int> > RIT_minhash(RaggedArray &x, const int L, const double branch, 
       int i1, i2;
       i1 = r_obs(mt); i2 = r_obs(mt);
       set_intersection(x.begin(i1), x.end(i1), x.begin(i2), x.end(i2), back_inserter(root));
-      if ((root.size() >= min_inter_sz) && (PrevEst(root, H0t, L, n0_plus_1_over_n0, recip_n0_plus_1) < theta0)) {
+      if ((root.size() >= min_inter_sz) && (PrevEst(root, H0t, L, n0_plus_1_over_n0, recip_n0_plus_1, n_cores) < theta0)) {
         // Class 0 prevalence must be low
         // interactions must have size at least min_inter_sz
         if ((root.size() > min_inter_sz) && (depth > 2)) {
@@ -166,7 +166,7 @@ set<vector<int> > RIT_minhash(RaggedArray &x, const int L, const double branch, 
               for (int k = 0; k < cur_branch; k++) {
                 int i = r_obs(mt);
                 vector<int> temp_interaction = binary_intersect(x.begin(i), x.end(i),parents[depth-1].begin(node), parents[depth-1].end(node));
-                if ((temp_interaction.size() >= min_inter_sz) && (PrevEst(temp_interaction, H0t, L, n0_plus_1_over_n0, recip_n0_plus_1)< theta0)) {
+                if ((temp_interaction.size() >= min_inter_sz) && (PrevEst(temp_interaction, H0t, L, n0_plus_1_over_n0, recip_n0_plus_1, n_cores)< theta0)) {
                   if ((depth == depthFinal) || (temp_interaction.size() == min_inter_sz)) {                  
                     candidate_interactions.insert(temp_interaction);
                   } 

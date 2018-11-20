@@ -2,6 +2,7 @@
 #include<algorithm>
 #include<set>
 #include<Rcpp.h>
+#include<Rcpp.h>
 #include "RaggedArray.h"
 #include "InputFunctions.h"
 #include "RITmain.h"
@@ -29,7 +30,7 @@ SEXP RIT_1class(SEXP z, int L, int branch, int depth, int n_trees, int min_inter
     int p=x.ncol();
     
     //perform RIT to find total_candidate_interactions
-    set<vector<int> > total_candidate_interactions=RIT_basic(x,L,branch,depth,n_trees,min_inter_sz, n_cores,n);
+    set<vector<int> > total_candidate_interactions=RIT_basic(x,L,branch,depth,n_trees,min_inter_sz, n_cores, n);
     
     //Get vector of prevalences giving the estimated prevalence of each candidate interaction
     //For this we need to create the minhash matrix Ht
@@ -39,11 +40,11 @@ SEXP RIT_1class(SEXP z, int L, int branch, int depth, int n_trees, int min_inter
       Ht[k] = new int [L];
     }
 
-    CreateHt(x, L, Ht);
+    CreateHt(x, L, Ht, n_cores);
     
     const double n_plus1_over_n=(n+1)/n; 
     const double recip_n_plus_1=1/(n+1);
-    vector<double> prevalences=PrevEst_inter(total_candidate_interactions, Ht, L,n_plus1_over_n,recip_n_plus_1);
+    vector<double> prevalences=PrevEst_inter(total_candidate_interactions, Ht, L,n_plus1_over_n,recip_n_plus_1,n_cores);
     
     //return list 'Output', containing both total_candidate_interactions and prevalences
     List output;
@@ -94,7 +95,8 @@ SEXP RIT_2class(SEXP z, SEXP z0, int L, int branch, int depth, int n_trees, doub
       Ht[k] = new int [L];
       H0t[k] = new int [L];
 	}
-  CreateHt(x, L, Ht); CreateHt(x0,L,H0t);
+  CreateHt(x, L, Ht, n_cores);
+  CreateHt(x0,L,H0t, n_cores);
   
   // Perform RIT
   // Sets prevalent in z but not in z0
@@ -104,10 +106,10 @@ SEXP RIT_2class(SEXP z, SEXP z0, int L, int branch, int depth, int n_trees, doub
   set<vector<int> > total_candidate_interactions0=RIT_minhash(x0, L, branch, depth, n_trees, 
     theta0, theta1, min_inter_sz, n_cores, n, Ht, n_plus1_over_n, recip_n_plus_1);
 
-  vector<double> prevalences11=PrevEst_inter(total_candidate_interactions, Ht, L,n_plus1_over_n, recip_n_plus_1);
-  vector<double> prevalences10=PrevEst_inter(total_candidate_interactions, H0t, L,n_plus1_over_n, recip_n_plus_1);
-  vector<double> prevalences00=PrevEst_inter(total_candidate_interactions0, H0t, L,n0_plus1_over_n0, recip_n0_plus_1);
-  vector<double> prevalences01=PrevEst_inter(total_candidate_interactions0, Ht, L,n0_plus1_over_n0, recip_n0_plus_1);
+  vector<double> prevalences11=PrevEst_inter(total_candidate_interactions, Ht, L,n_plus1_over_n, recip_n_plus_1, n_cores);
+  vector<double> prevalences10=PrevEst_inter(total_candidate_interactions, H0t, L,n_plus1_over_n, recip_n_plus_1, n_cores);
+  vector<double> prevalences00=PrevEst_inter(total_candidate_interactions0, H0t, L,n0_plus1_over_n0, recip_n0_plus_1, n_cores);
+  vector<double> prevalences01=PrevEst_inter(total_candidate_interactions0, Ht, L,n0_plus1_over_n0, recip_n0_plus_1, n_cores);
   
   //create lists 'output','output0' containing both total_candidate_interactions and prevalences for each class
   List output; List output0;
@@ -133,7 +135,7 @@ SEXP RIT_2class(SEXP z, SEXP z0, int L, int branch, int depth, int n_trees, doub
 
 // [[Rcpp::export]]
 SEXP PrevEstimate_internal(SEXP interactions,
-			   SEXP z, int L, bool is_sparse) {
+			   SEXP z, int L, bool is_sparse, int n_cores) {
   
     //construct RaggedArray
     RaggedArray x;
@@ -157,7 +159,7 @@ SEXP PrevEstimate_internal(SEXP interactions,
       Ht[k] = new int [L];
     }
 
-    CreateHt(x, L, Ht);
+    CreateHt(x, L, Ht, n_cores);
     
     const double n_plus1_over_n=(n+1)/n; 
     const double recip_n_plus_1=1/(n+1);
@@ -166,7 +168,8 @@ SEXP PrevEstimate_internal(SEXP interactions,
 
     vector<double> prevalences=PrevEst_inter(interactions1, Ht, L,
 					     n_plus1_over_n,
-					     recip_n_plus_1);
+					     recip_n_plus_1,
+					     n_cores);
     
 
     List output;

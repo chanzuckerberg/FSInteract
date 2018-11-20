@@ -5,7 +5,7 @@
 Estimate prevalences of interactions using min-wise hashing.
 }
 \usage{
-PrevEstimate(interactions, z, L = 100L, output_list = FALSE)
+PrevEstimate(interactions, z, L = 100L, n_cores = 1L, output_list = FALSE)
 }
 \arguments{
   \item{interactions}{the list of interactions (as int vectors).
@@ -13,6 +13,8 @@ PrevEstimate(interactions, z, L = 100L, output_list = FALSE)
   \item{z}{data matrix where each row corresponds to an observation and columns correspond to variables. Can be in sparse matrix format (inherit from class "sparseMatrix" in the \pkg{Matrix} package).
   }
   \item{L}{number of rows of the min-wise hash matrix used to estimate prevalences. A larger value will result in more accurate estimates, but computation time will increase linearly with \code{L}.
+}
+  \item{n_cores}{number of cores for parallel processing. Only used when openMP is installed.
 }
   \item{output_list}{if \code{FALSE} returns each interaction set as a string with variable indices separated by spaces. If \code{TRUE} returns each interaction set as an integer vector.
 }
